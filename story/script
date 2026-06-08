@@ -1,0 +1,202 @@
+Escena 1: PATIO DEL COLEGIO
+
+Lugar: Patio de colegio en el recreo [colores medios]
+
+[Se ve el patio durante el recreo. El protagonista está solo. Aparecen Juanito y Pepito.]
+
+JUANITO: ¿Ya juegas Clicker Invaders?
+PEPITO: ¡Todos están jugando!
+JUANITO: Llegué al nivel 27 ayer. ¿Tú en qué vas?
+
+[Encima de ellos aparece "Status social: 35"]
+
+Opciones:
+"No, ¿qué es eso?"
+"No me gustan esos juegos."
+"Sí lo conozco."
+
+Opción 1: "No, ¿qué es eso?"
+
+JUANITO: Es un clicker. Vas haciendo clic y subes de nivel.
+PEPITO: Es muy sencillo. Cinco minutos y ya eres adicto.
+JUANITO: Además es gratis. Es como tener mil sorpresas en una app.
+
+[Opción única: Descargar juego → Pantalla en negro → Transición a la siguiente escena.]
+
+Opción 2 : "No me gustan esos juegos."
+
+PEPITO:  Yo también decía lo mismo, ¿pero sabes qué?
+JUANITO: Todos al final terminan jugando.
+PEPITO: Luego te engancha y ya no quieres parar.
+
+[Opción única: Descargar juego → Pantalla en negro → Transición a la siguiente escena.]
+
+Opción 3 "Sí lo conozco."
+
+PEPITO: ¿En serio? ¿Entonces sabes lo bueno que está.
+JUANITO: ¿Y por qué todavía no juegas?
+PEPITO: Si quieres te agregamos al grupo de chat.
+
+[Opción única: Descargar juego]
+[Pantalla negra.]
+
+
+Escena 2: HABITACIÓN - PRIMER CONTACTO
+
+Lugar: Habitación del protagonista / PC [colores medios que se vuelven más vivos al iniciarse el juego]
+
+En pantalla: Tutorial del juego Clicker Invaders:
+Texto: “Haz clic.”
+Objetivo: “Clics necesarios: 20”
+
+Gameplay: El jugador hace clic repetidamente. Aparecen mensajes de nivel y logros.
+Juego: ¡Nivel 1 completado!
+Juego: ¡Nivel 2 desbloqueado!
+Juego: +5 de Status Social.
+
+Mensaje en grupo (chat de la escuela):
+Juanito: “¿Ya empezaste?”
+Juanito: “Te dije que era divertido.”
+
+El jugador continúa haciendo clic. Sigue subiendo niveles:
+Juego: ¡Nivel 3 completado!
+Juego: ¡Nivel 4 completado!
+Juego: ¡Nivel 5 completado!
+
+[Evento final de la escena: El juego otorga una caja de recompensa gratuita.]
+Notificación: “¡Caja gratuita disponible!”
+[Abrir caja]
+Recompensa: Sombrero Galáctico Legendario (+25% velocidad de abducción)
++10 de Status Social.
+
+Nuevo mensaje en el grupo:
+Pepito: “¿Ya abriste tu caja?”
+Juanito: “Yo conseguí una legendaria.”
+Pepito: “¡Buenísimo!”
+
+Notificaciones adicionales:
+“¡Evento exclusivo por tiempo limitado! Termina en 23:59:59.”
+“¡Oferta única: Caja x10 – 80% de descuento!”
+“¡Tus amigos avanzan más rápido que tú!”
+
+[Nota: En el mismo día, Pepito llega al nivel 32, Juanito al 38, y tú estás en el 21.]
+
+
+Escena 3: HABITACIÓN - ENGANCHE
+
+Lugar: Habitación del protagonista / PC [colores más fuertes]
+
+Gameplay crítico: Al hacer cada clic, el juego duplica la acción:
+La meta de clicks es 500.
+Al inicio Jugador hace 1 clic → Juego registra 1 clic.
+Al clic 75 Jugador hace 1 clic → Juego registra 2 clics.
+Cada clic cuenta como 2 segundos de tiempo en la barra superior del medio.
+
+Sin intervención:
+Texto: “¡Compra realizada!”
+Texto: “¡Caja Misteriosa comprada!”
+
+El jugador intenta diversas acciones, pero el juego lo dirige a otra parte:
+El jugador intenta abrir Configuración: aparece la Tienda del juego.
+El jugador intenta cerrar un anuncio: aparece otra oferta emergente.
+
+Diálogo de fondo:
+MAMÁ (a lo lejos): “¿Sigues jugando, hijo?”
+PAPÁ (desde otro cuarto): “¡Ven a cenar!”
+
+[Pasa un tiempito]
+
+MAMÁ: [suspiro] “….”
+PAPÁ: [silencio] “….”
+
+
+ESCENA 4: SALA DE ESTAR | PC
+
+Lugar: Mitad la de estar, mitad jueguito. Los padres ven televisión de fondo. [colores apagados]
+
+Para que esta escena avance el jugador tiene que estar haciendo clic. Si no hace clic sale un mensaje que le dice que siga clickeando y se reinicia el contador de clics a 0. Una meta de clics que se va actualizando, plan si el jugador llega a 200/200 se actualiza a 200/500 y así hasta cubrir toda la escena, solo lo necesario.
+
+Acciones:
+El televisor cambia de canal repetidamente.
+El protagonista sigue pegado a su laptop/celular, sin responder.
+Se muestra el paso del tiempo con fechas que avanzan rápidamente en pantalla:
+01/09/2026
+15/09/2026
+28/09/2026
+12/10/2026
+03/11/2026
+
+Información en pantalla: El Status Social y el nivel del juego continúan subiendo automáticamente.
+
+MAMÁ: “Ojalá fuera igual de dedicado con los estudios…”
+PAPÁ: “Al menos en eso le va bien; solo ha bajado en química.”
+
+La sala se vuelve cada vez más oscura visualmente. En contraste, la interfaz del juego en la pantalla del protagonista está llena de colores intensos y efectos brillantes.
+
+[Pantalla se hace negra]
+
+
+ESCENA 5: SALA DE ESTAR | PC – Consecuencias inesperadas
+
+Lugar: Mitad la de estar, mitad jueguito. Los padres ven televisión de fondo. [colores apagados]
+
+Evento clave: El protagonista realiza una compra no autorizada:
+Notificación: “Se requiere S/100 para comprar Caja Legendaria.”
+Jugador pulsa “No” (no quería gastar).
+El juego, ignorando la elección, completa la transacción.
+Notificación: “¡Caja Legendaria adquirida con éxito!”
+
+Pensamiento del protagonista: “¡Oh no, les voy a mentir a mis papás y me van a matar!”
+
+Reacción de los padres: Curiosamente, notan algo agradable en el protagonista:
+MAMÁ: “Hijo, ¿te sientes bien? Últimamente estás más tranquilo.”
+PAPÁ: “¿Ya estás listo para una cena familiar sin quejarte? Te mereces un descanso.”
+
+No hay reclamo ni enfado. En cambio, muestran afecto. El dinero gastado pasa desapercibido.
+El jugador ve que, a pesar de gastar dinero que no tenía, nada malo ocurre. Los padres, en lugar de regañar, actúan cariñosos.
+
+
+ESCENA 6: HABITACIÓN
+
+Lugar: Habitación del protagonista / PC [colores muy vivos]
+
+El jugador manejando al protagonista juega un ratito al clicker y después el protagonista empieza a jugar solo sin hacer caso a los clicks del jugador.
+
+Gameplay final: El juego comienza a jugar solo sin intervención del jugador:
+Niveles se desbloquean continuamente:
+“Nivel 50 completado. ¡Nivel 51 desbloqueado!”
+“Nivel 100 completado. ¡Nivel 101 desbloqueado!”
+(…)
+“Nivel 396 completado. ¡Nivel 397 desbloqueado!”
+Mensajes automáticos: “¡Felicitaciones! Has superado a Pepito y Juanito.”
+
+El personaje no realiza ningún clic; solo observa cómo la interfaz avanza sola.
+
+Interfaz visible:
+Nivel de juego creciente sin fin: Meta actual: 100,000,000 clics → Nueva meta: 1,000,000,000 clics → etc.
+El reflejo de los ojos cansados del jugador aparece sobre la pantalla, con ojeras.
+Reloj y fecha acelerados: 2027… 2028… 2029… 2030… 2040…
+
+La única opción activa en pantalla es: [SALIR].
+
+El jugador clica en [SALIR] y aparecen sucesivamente:
+“Perderás 3 años de progreso.”
+Botón: [CONTINUAR]
+“Tus amigos te superarán.”
+Botón: [CONTINUAR]
+“¿Estás seguro?”
+Botón: [SÍ]
+“¿Realmente seguro?”
+Botón: [SÍ]
+“¡Oferta especial antes de salir!”
+Botón: [CONTINUAR]
+“Última oferta.”
+Botón: [CONTINUAR]
+“Oferta irrepetible.”
+Botón: [CONTINUAR]
+“Oferta legendaria.”
+Botón: [CONTINUAR]
+
+Al final de esta cadena, la pantalla presenta un solo botón: [VOLVER AL JUEGO].
+
+El protagonista lo presiona, pero la ventana del juego comienza a encogerse. Ahora ya no estamos en primera persona sino en tercera. Vemos la espalda del protagonista frente al PC jugando. El protagonista continúa haciendo clic indefinidamente. La pantalla se oscurece lentamente, mientras se muestran los créditos finales sobre el fondo negro.
