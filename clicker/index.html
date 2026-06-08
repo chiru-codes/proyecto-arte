@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS CLICKER</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="game-container">
+
+    <!-- FONDO + PARTÍCULAS -->
+    <canvas id="particle-canvas"></canvas>
+    <div id="grid-overlay"></div>
+
+    <!-- HUD SUPERIOR -->
+    <header id="hud-top">
+        <div class="hud-block" id="block-prestige">
+            <span class="hud-label">PRESTIGE</span>
+            <span class="hud-value" id="prestige-count">0</span>
+        </div>
+        <div class="hud-block" id="block-total">
+            <span class="hud-label">ALL TIME</span>
+            <span class="hud-value" id="total-clicks">0</span>
+        </div>
+        <div class="hud-block" id="block-cps">
+            <span class="hud-label">POR SEGUNDO</span>
+            <span class="hud-value" id="cps-display">0</span>
+        </div>
+    </header>
+
+    <!-- ZONA CENTRAL -->
+    <main id="main-area">
+
+        <!-- SCORE PRINCIPAL -->
+        <section id="score-section">
+            <div id="score-wrapper">
+                <div id="score-display">0</div>
+                <div id="score-label">NEXUS COINS</div>
+            </div>
+            <div id="combo-wrapper">
+                <div id="combo-bar-track"><div id="combo-bar-fill"></div></div>
+                <div id="combo-info">
+                    <span id="combo-label">COMBO</span>
+                    <span id="combo-count">x1</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOTÓN CLICKER -->
+        <section id="clicker-section">
+            <div id="click-ring-outer">
+                <div id="click-ring-inner">
+                    <button id="click-btn" aria-label="Clicker principal">
+                        <div id="btn-core">
+                            <div id="btn-icon">⬡</div>
+                            <div id="btn-label">CLICK</div>
+                        </div>
+                        <svg id="btn-progress-svg" viewBox="0 0 220 220">
+                            <circle id="btn-progress-track" cx="110" cy="110" r="100"/>
+                            <circle id="btn-progress-fill" cx="110" cy="110" r="100"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="multiplier-display"></div>
+            <div id="rage-bar-wrapper">
+                <div id="rage-label">RAGE</div>
+                <div id="rage-bar-track"><div id="rage-bar-fill"></div></div>
+            </div>
+        </section>
+
+        <!-- UPGRADES -->
+        <section id="upgrades-section">
+            <div id="upgrades-title">MEJORAS</div>
+            <div id="upgrades-list">
+                <!-- Generado por JS -->
+            </div>
+            <button id="prestige-btn" class="hidden">⬡ PRESTIGE ⬡</button>
+        </section>
+    </main>
+
+    <!-- FLOATING NUMBERS -->
+    <div id="floating-layer" aria-hidden="true"></div>
+
+    <!-- NOTIFICACIONES -->
+    <div id="toast-container" aria-live="polite"></div>
+
+    <!-- GOLDEN CLICK (aparece random) -->
+    <button id="golden-btn" class="hidden" aria-label="Golden click especial">✦</button>
+
+    <!-- RAGE MODE OVERLAY -->
+    <div id="rage-overlay" class="hidden" aria-hidden="true"></div>
+
+</div>
+
+<script src="js/state.js"></script>
+<script src="js/autosave.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/rage.js"></script>
+<script src="js/input.js"></script>
+<script src="js/auto-clicker.js"></script>
+<script src="js/combo.js"></script>
+<script src="js/golden-click.js"></script>
+
+<script src="js/effects.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/upgrade.js"></script>
+<script src = "js/prestige.js"></script>
+<script src="js/upgrades-ui.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
