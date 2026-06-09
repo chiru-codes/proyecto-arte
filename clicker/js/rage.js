@@ -54,7 +54,8 @@ const Rage = (() => {
 
     function getMultiplier() {
         if (!State.get('rageActive')) return 1;
-        return Upgrades.isOwned('rage_boost') ? 5 : 3;
+        const level = Upgrades.getLevel('rage_boost');
+        return Math.min(100, 3 + level * 0.5);
     }
 
     function isActive() { return State.get('rageActive'); }

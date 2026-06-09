@@ -10,7 +10,8 @@ const GoldenClick = (() => {
     let active = false;
 
     function getInterval() {
-        return Upgrades.isOwned('golden_freq') ? 12000 : 25000;
+        const level = Upgrades.getLevel('golden_freq');
+        return Math.max(5000, 25000 - level * 2000);
     }
 
     function scheduleNext() {

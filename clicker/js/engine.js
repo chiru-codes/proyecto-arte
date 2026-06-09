@@ -7,10 +7,11 @@
 ============================================= */
 const Engine = (() => {
     function getCritConfig() {
-        if (Upgrades.isOwned('crit_chance')) {
-            return { chance: 0.20, multiplier: 12 };
-        }
-        return { chance: 0.10, multiplier: 8 };
+        const level = Upgrades.getLevel('crit_chance');
+        return {
+            chance: Math.min(0.90, 0.10 + level * 0.02),
+            multiplier: 8 + level * 0.5,
+        };
     }
 
     function computeClick() {

@@ -5,79 +5,65 @@
 const Upgrades = (() => {
     const catalog = [
         {
-            id: 'double',
-            name: 'NEXUS CORE x2',
-            desc: 'Dobla el valor base de cada clic',
-            cost: 500,
-            effect: (pts) => pts * 2,
-            stackable: false,
+            id: 'core',
+            name: 'NEXUS CORE',
+            desc: 'Cada nivel multiplica el daño base',
+            baseCost: 500,
+            costMult: 1.15,
         },
         {
             id: 'crit_chance',
             name: 'HYPERCRIT',
-            desc: 'Críticos más frecuentes y poderosos',
-            cost: 1200,
-            effect: null,
-            stackable: false,
+            desc: 'Cada nivel mejora los críticos',
+            baseCost: 1200,
+            costMult: 1.15,
         },
         {
             id: 'combo_ext',
             name: 'RESONANCIA',
-            desc: 'El combo dura el doble de tiempo',
-            cost: 2500,
-            effect: null,
-            stackable: false,
+            desc: 'Cada nivel alarga la ventana de combo',
+            baseCost: 2500,
+            costMult: 1.15,
         },
         {
             id: 'rage_boost',
             name: 'MODO BERSERKER',
-            desc: 'Rage Mode multiplica x5 en vez de x3',
-            cost: 5000,
-            effect: null,
-            stackable: false,
+            desc: 'Cada nivel potencia el modo Rage',
+            baseCost: 5000,
+            costMult: 1.15,
         },
         {
             id: 'auto',
             name: 'AUTO-CLICKER',
-            desc: '+1 clic automático cada 2 segundos',
-            cost: 3000,
-            effect: null,
-            stackable: false,
-        },
-        {
-            id: 'triple',
-            name: 'NEXUS CORE x3',
-            desc: 'Triplica el valor base (requiere x2)',
-            cost: 8000,
-            requires: 'double',
-            effect: (pts) => pts * 3,
-            stackable: false,
+            desc: 'Cada nivel acelera el clic automático',
+            baseCost: 3000,
+            costMult: 1.15,
         },
         {
             id: 'golden_freq',
             name: 'FRECUENCIA ÁUREA',
-            desc: 'Golden Clicks aparecen más seguido',
-            cost: 4000,
-            effect: null,
-            stackable: false,
+            desc: 'Cada nivel reduce el tiempo entre Golden Clicks',
+            baseCost: 4000,
+            costMult: 1.15,
         },
     ];
 
+    function getLevel(id) {
+        const levels = State.get('upgradeLevels');
+        return levels[id] || 0;
+    }
+
     function isOwned(id) {
-        return State.get('owned').includes(id);
+        return getLevel(id) > 0;
+    }
+
+    function getCost(upg) {
+        const level = getLevel(upg.id);
+        return Math.floor(upg.baseCost * Math.pow(upg.costMult, level));
     }
 
     function canBuy(upg) {
-        if (isOwned(upg.id)) return false;
-
-        if (upg.hasOwnProperty('requires') && upg.requires) {
-            if (!isOwned(upg.requires)) {
-                return false;
-            }
-        }
-
-        const actualScore = State.get('score') || 0;
-        return actualScore >= upg.cost;
+        return State.get('score') >= getCost(upg);
     }
 
     function buy(id) {
@@ -88,32 +74,39 @@ const Upgrades = (() => {
             return false;
         }
 
-        if (!canBuy(upg)) {
-            console.warn(`Tienda: Intento de compra rechazado para ID: ${id}. Monedas actuales: ${State.get('score')}, Costo: ${upg.cost}`);
+        const cost = getCost(upg);
+
+        if (State.get('score') < cost) {
+            console.warn(`Tienda: Intento de compra rechazado para ID: ${id}. Monedas actuales: ${State.get('score')}, Costo: ${cost}`);
             return false;
         }
 
-        State.inc('score', -upg.cost);
+        State.inc('score', -cost);
 
-        const currentOwned = State.get('owned') || [];
-        if (!currentOwned.includes(id)) {
-            currentOwned.push(id);
-            State.set('owned', currentOwned);
-        }
+        const levels = State.get('upgradeLevels');
+        levels[id] = (levels[id] || 0) + 1;
 
         return true;
     }
 
     function getAll() { return catalog; }
-    function getOwned() { return State.get('owned'); }
+    function getAllWithLevels() {
+        return catalog.map(upg => ({
+            ...upg,
+            level: getLevel(upg.id),
+            cost: getCost(upg),
+        }));
+    }
 
     function applyClickMultipliers(basePoints) {
         let pts = basePoints;
-        if (isOwned('triple')) pts *= 3;
-        else if (isOwned('double')) pts *= 2;
+        const coreLevel = getLevel('core');
+        if (coreLevel > 0) {
+            pts *= (1 + coreLevel * 0.25);
+        }
         pts *= State.get('prestigeMultiplier');
         return Math.floor(pts);
     }
 
-    return { catalog, isOwned, canBuy, buy, getAll, getOwned, applyClickMultipliers };
+    return { catalog, getLevel, isOwned, getCost, canBuy, buy, getAll, getAllWithLevels, applyClickMultipliers };
 })();

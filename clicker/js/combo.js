@@ -9,9 +9,9 @@ const Combo = (() => {
     let progress = 1;
 
     function getMaxDuration(currentCombo) {
-        let duration = Upgrades.isOwned('combo_ext') ? BASE_DURATION * 2 : BASE_DURATION;
+        const level = Upgrades.getLevel('combo_ext');
+        let duration = BASE_DURATION + level * 1000;
 
-        // Reducción del 1.5% por cada punto de combo
         const factorReduccion = Math.max(0.15, 1 - (currentCombo * 0.015));
         
         return Math.floor(duration * factorReduccion);

@@ -19,8 +19,8 @@ const State = (() => {
         rageActive: false,
         rageTimer: 0,
 
-        // Upgrades (array de IDs comprados)
-        owned: [],
+        // Upgrades (objeto id → nivel)
+        upgradeLevels: {},
 
         // CPS (clicks per second tracking)
         recentClicks: [],
