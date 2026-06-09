@@ -22,6 +22,9 @@ const State = (() => {
         // Upgrades (objeto id → nivel)
         upgradeLevels: {},
 
+        // Revives (contador de microtransacciones)
+        revives: 0,
+
         // CPS (clicks per second tracking)
         recentClicks: [],
     };

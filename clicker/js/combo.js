@@ -49,9 +49,9 @@ const Combo = (() => {
         // 5. El temporizador letal de Permadeath
         timer = setTimeout(() => {
             clearInterval(decayInterval);
-            
-            if (typeof AutoSave !== 'undefined' && AutoSave.resetTotal) {
-                AutoSave.resetTotal();
+
+            if (typeof GameOver !== 'undefined' && GameOver.show) {
+                GameOver.show();
             } else {
                 localStorage.removeItem('nexus_save_v2');
                 alert("❌ ¡NEXO DESTRUIDO! El ritmo colapsó.");

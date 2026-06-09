@@ -31,9 +31,13 @@ const AutoSave = (() => {
     }
 
     function resetTotal(){
-        localStorage.removeItem('nexus_save_v2');
-        alert("¡Te quedaste sin tiempo! has perdido")
-        window.location.reload();
+        if (typeof GameOver !== 'undefined' && GameOver.show) {
+            GameOver.show();
+        } else {
+            localStorage.removeItem('nexus_save_v2');
+            alert("¡Te quedaste sin tiempo! has perdido")
+            window.location.reload();
+        }
     }
 
     return { save, load, mark, start , resetTotal};
