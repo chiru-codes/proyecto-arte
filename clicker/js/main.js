@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Input.start();
     Upgrades_UI.render();
     UI.updateAll();
+    Psychedelia.start();
 
     Effects.toast('⬡ NEXUS CONECTADO ⬡', 'gold');
 
