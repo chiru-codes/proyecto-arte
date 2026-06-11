@@ -17,7 +17,7 @@ const AutoClicker = (() => {
             return;
         }
 
-        const desiredMs = Math.max(500, 2000 - level * 150);
+        const desiredMs = Math.max(5000, 15000 - level * 500);
 
         if (interval && level === lastLevel) return;
 

@@ -3,48 +3,50 @@
    Depende de: State
 ============================================= */
 const Upgrades = (() => {
+    const PHI = (1 + Math.sqrt(5)) / 2;
+
     const catalog = [
         {
             id: 'core',
             name: 'NEXUS CORE',
             desc: 'Cada nivel multiplica el daño base',
             baseCost: 500,
-            costMult: 1.15,
+            costMult: PHI,
         },
         {
             id: 'crit_chance',
             name: 'HYPERCRIT',
             desc: 'Cada nivel mejora los críticos',
             baseCost: 1200,
-            costMult: 1.15,
+            costMult: PHI,
         },
         {
             id: 'combo_ext',
             name: 'RESONANCIA',
             desc: 'Cada nivel alarga la ventana de combo',
             baseCost: 2500,
-            costMult: 1.15,
+            costMult: PHI,
         },
         {
             id: 'rage_boost',
             name: 'MODO BERSERKER',
             desc: 'Cada nivel potencia el modo Rage',
             baseCost: 5000,
-            costMult: 1.15,
+            costMult: PHI,
         },
         {
             id: 'auto',
             name: 'AUTO-CLICKER',
             desc: 'Cada nivel acelera el clic automático',
             baseCost: 3000,
-            costMult: 1.15,
+            costMult: PHI,
         },
         {
             id: 'golden_freq',
             name: 'FRECUENCIA ÁUREA',
             desc: 'Cada nivel reduce el tiempo entre Golden Clicks',
             baseCost: 4000,
-            costMult: 1.15,
+            costMult: PHI,
         },
     ];
 

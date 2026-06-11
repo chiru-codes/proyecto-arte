@@ -7,8 +7,9 @@ const Upgrades_UI = (() => {
     const list = document.getElementById('upgrades-list');
 
     function render() {
+        const keys = [1, 2, 3, 4, 5, 6];
         list.innerHTML = '';
-        for (const upg of Upgrades.getAll()) {
+        for (const [i, upg] of Upgrades.getAll().entries()) {
             const level  = Upgrades.getLevel(upg.id);
             const cost   = Upgrades.getCost(upg);
             const score  = State.get('score');
@@ -19,9 +20,11 @@ const Upgrades_UI = (() => {
             if (level > 0) card.classList.add('owned');
             if (level === 0 && score < cost) card.classList.add('locked');
             card.dataset.id = upg.id;
+            card.dataset.key = keys[i];
 
             card.innerHTML = `
                 <div class="upgrade-shine"></div>
+                <div class="upgrade-key">[${keys[i]}]</div>
                 <div class="upgrade-name">${upg.name}</div>
                 <div class="upgrade-desc">${upg.desc}</div>
                 <div class="upgrade-level">NIVEL ${level}</div>

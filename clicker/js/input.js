@@ -31,6 +31,24 @@ const Input = (() => {
 				e.preventDefault();
 				triggerClick();
 			}
+			if (e.code === 'Space') {
+				e.preventDefault();
+				Prestige.trigger();
+			}
+			if (/^[1-6]$/.test(e.key)) {
+				e.preventDefault();
+				const idx = parseInt(e.key) - 1;
+				const upgs = Upgrades.getAll();
+				if (idx < upgs.length) {
+					const upg = upgs[idx];
+					if (Upgrades.canBuy(upg) && Upgrades.buy(upg.id)) {
+						Effects.toast(`⬡ ${upg.name} → NIVEL ${Upgrades.getLevel(upg.id)} ⬡`, 'gold');
+						Upgrades_UI.render();
+						UI.updateAll();
+						if (upg.id === 'auto') AutoClicker.enable();
+					}
+				}
+			}
 		});
         btn.classList.add('idle-bounce');
         btn.addEventListener('mousedown', () => btn.classList.remove('idle-bounce'));
