@@ -194,6 +194,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // Chat inicial
         setTimeout(() => addChatMsg('Juanito', '¿Ya empezaste?'), 2000);
         setTimeout(() => addChatMsg('Juanito', 'Te dije que era divertido.'), 5000);
+        setTimeout(() => {
+            addChatMsg('Pepito', 'Todos ya entraron al evento.');
+        }, 4000);
+
+        setTimeout(() => {
+            addChatMsg('Juanito', 'Si no juegas hoy te lo pierdes.');
+        }, 6000);
+
+        setTimeout(() => {
+            addChatMsg('Pepito', 'Solo dura 24 horas.');
+        }, 8000);
+
+        setTimeout(() => {
+            addChatMsg('Juanito', 'Ya somos todos nivel 30.');
+        }, 10000);
+
+        setTimeout(() => {
+            addChatMsg('Pepito', 'Faltas tú.');
+        }, 12000);
     }
 
     function onClickScene2() {
@@ -397,7 +416,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // Padres a los 3 s
         setTimeout(() => {
             const p = document.getElementById('s4-parents');
-            if (p) p.classList.add('show');
+            if (!p) return;
+
+            p.classList.add('show');
+            p.innerHTML = '<div class="parent-line">MAMÁ: ¿Cómo te fue hoy?</div>';
+
+            setTimeout(() => {
+            p.innerHTML += '<div class="parent-line">MAMÁ: ¿Me escuchaste?</div>';
+            }, 8000);
+
+            setTimeout(() => {
+            p.innerHTML += '<div class="parent-line">PAPÁ: Ya casi no sales de tu cuarto.</div>';
+            }, 16000);
+
+            setTimeout(() => {
+            p.innerHTML += '<div class="parent-line">MAMÁ: Antes pasabas más tiempo con nosotros.</div>';
+            }, 24000);
+
+            setTimeout(() => {
+            p.innerHTML += '<div class="parent-line">PAPÁ: Ya ni cenamos juntos.</div>';
+            }, 32000);
+
         }, 3000);
 
         // Chequeo de inactividad
@@ -696,7 +735,18 @@ document.addEventListener('DOMContentLoaded', () => {
             thirdView.className = 'third-person-view';
             thirdView.innerHTML = `
                 <p>Vemos la espalda del protagonista frente al PC jugando.</p>
-                <p style="color: var(--c-muted); font-size: 1.1rem;">El protagonista continúa haciendo clic indefinidamente.</p>
+
+                <p style="color: var(--c-muted); margin-top:20px;">
+                    Nivel 999999 completado.
+                </p>
+
+                <p style="color: var(--c-muted); margin-top:20px;">
+                    Tus amigos dejaron de jugar hace años.
+                </p>
+
+                <p style="font-size:1.4rem; margin-top:30px;">
+                    Sigues aquí.
+                </p>
             `;
             scene6.appendChild(thirdView);
 
