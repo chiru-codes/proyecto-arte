@@ -82,13 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
     ────────────────────────────────────────── */
 
     function showScene(id) {
-        document.querySelectorAll('.scene').forEach(s => {
+        document.querySelectorAll('#story-panel .scene').forEach(s => {
             s.classList.remove('active');
         });
         const target = document.getElementById('scene-' + id);
-        if (target) {
-            target.classList.add('active');
-        }
+        if (target) target.classList.add('active');
         story.currentScene = id;
     }
 
@@ -733,11 +731,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* ══════════════════════════════════════════
        HABILITAR / DESHABILITAR CLICKER
+       El clicker (panel derecho) es siempre
+       interactivo. Solo controlamos la opacidad
+       del botón para indicar estado al jugador.
     ══════════════════════════════════════════ */
 
     function enableClicker() {
-        const gc = document.getElementById('game-container');
-        if (gc) gc.style.pointerEvents = 'auto';
         const btn = document.getElementById('click-btn');
         if (btn) {
             btn.style.pointerEvents = 'auto';
@@ -746,12 +745,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function disableClicker() {
-        const gc = document.getElementById('game-container');
-        if (gc) gc.style.pointerEvents = 'none';
         const btn = document.getElementById('click-btn');
         if (btn) {
             btn.style.pointerEvents = 'none';
-            btn.style.opacity = '0.3';
+            btn.style.opacity = '0.25';
         }
     }
 
