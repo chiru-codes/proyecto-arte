@@ -1,0 +1,913 @@
+/* =============================================
+   CLICKER INVADERS - LA HISTORIA
+   Layout split: narrativa izquierda / clicker derecha
+============================================= */
+
+:root {
+    --c-bg:        #06060a;
+    --c-panel:     #0d0d14;
+    --c-border:    rgba(255,255,255,0.06);
+    --c-text:      #e8e8f0;
+    --c-muted:     #484860;
+    --c-accent:    #b060ff;
+    --c-cyan:      #00e5ff;
+    --c-gold:      #ffc840;
+    --c-red:       #ff2055;
+    --c-green:     #00ff9d;
+    --font-mono:   'Share Tech Mono', monospace;
+    --font-ui:     'Rajdhani', sans-serif;
+    --glow-acc:    0 0 20px rgba(176,96,255,0.5);
+    --glow-gold:   0 0 30px rgba(255,200,64,0.7);
+    --glow-red:    0 0 25px rgba(255,32,85,0.6);
+    --glow-cyan:   0 0 20px rgba(0,229,255,0.5);
+
+    /* Ancho del panel narrativo */
+    --story-w: 42vw;
+    --divider: 2px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--font-ui);
+    user-select: none;
+}
+
+/* =============================================
+   ROOT LAYOUT
+   Dos columnas fijas: story (izq) | clicker (der)
+============================================= */
+
+body {
+    display: flex;
+}
+
+/* ── Columna izquierda: narrativa ── */
+#story-panel {
+    position: relative;
+    width: var(--story-w);
+    height: 100vh;
+    flex-shrink: 0;
+    z-index: 20;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: var(--c-bg);
+    border-right: var(--divider) solid rgba(176,96,255,0.25);
+    box-shadow: 4px 0 30px rgba(0,0,0,0.8);
+}
+
+/* ── Divisor luminoso ── */
+#story-panel::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(176,96,255,0.6) 30%,
+        rgba(0,229,255,0.6) 70%,
+        transparent 100%
+    );
+    pointer-events: none;
+}
+
+/* ── Columna derecha: el clicker ocupa el resto ── */
+#game-container {
+    position: relative;
+    width: calc(100vw - var(--story-w) - var(--divider));
+    height: 100vh;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: auto; /* siempre interactivo */
+}
+
+/* El canvas de partículas llena solo su columna */
+#particle-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+#grid-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* =============================================
+   ESCENAS NARRATIVAS
+   Todas van dentro de #story-panel
+   Se muestran/ocultan con .active
+============================================= */
+
+.scene {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.scene.active {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Fondos de escena (dentro del panel izquierdo) */
+.scene-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.school-bg  { background: linear-gradient(160deg, #2e4d38 0%, #1e3828 60%, #0f2018 100%); }
+.room-bg    { background: linear-gradient(160deg, #14142a 0%, #0c0c1e 60%, #06060f 100%); }
+.living-bg  { background: linear-gradient(160deg, #0a0a16 0%, #06060e 60%, #020208 100%); }
+.credits-bg { background: #000; }
+
+.dim    { filter: saturate(0.45) brightness(0.85); }
+.vivid  { filter: saturate(1.6) brightness(1.1); }
+.psycho { filter: saturate(3) brightness(1.2) hue-rotate(20deg); }
+
+.scene-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+.solid-overlay { background: rgba(6,6,10,0.96); }
+
+/* =============================================
+   ESCENA 1: PATIO
+============================================= */
+
+/* Cabecera de escena con nombre de lugar */
+.scene-header {
+    position: relative;
+    z-index: 15;
+    padding: 1rem 1.2rem 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-shrink: 0;
+}
+
+.scene-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--c-muted);
+    text-transform: uppercase;
+}
+
+.scene-location {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--c-accent);
+    letter-spacing: 2px;
+}
+
+.status-chip {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--c-gold);
+    background: rgba(255,200,64,0.08);
+    padding: 0.25rem 0.7rem;
+    border: 1px solid rgba(255,200,64,0.3);
+    border-radius: 3px;
+    text-shadow: var(--glow-gold);
+    pointer-events: none;
+}
+
+/* Área de diálogos / scroll */
+.scene-content {
+    position: relative;
+    z-index: 15;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1rem 1.2rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* scroll suave */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(176,96,255,0.3) transparent;
+}
+
+.scene-content::-webkit-scrollbar { width: 4px; }
+.scene-content::-webkit-scrollbar-track { background: transparent; }
+.scene-content::-webkit-scrollbar-thumb { background: rgba(176,96,255,0.3); border-radius: 2px; }
+
+/* Diálogos */
+.dialogue-box {
+    background: rgba(0,0,0,0.55);
+    border-left: 3px solid var(--c-accent);
+    padding: 0.7rem 1rem;
+    border-radius: 0 6px 6px 0;
+    animation: fadeSlideIn 0.4s ease both;
+}
+
+.char-name {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--c-accent);
+    letter-spacing: 3px;
+    margin-bottom: 0.25rem;
+}
+
+.char-text {
+    font-size: 0.97rem;
+    line-height: 1.5;
+    color: var(--c-text);
+}
+
+@keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Opciones */
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+}
+
+.option-btn {
+    background: rgba(176,96,255,0.08);
+    border: 1px solid rgba(176,96,255,0.5);
+    color: var(--c-text);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, border-color 0.2s;
+    border-radius: 4px;
+    text-align: left;
+}
+
+.option-btn:hover {
+    background: rgba(176,96,255,0.22);
+    border-color: var(--c-accent);
+    transform: translateX(4px);
+}
+
+/* =============================================
+   ESCENAS 2-4-6: HUDs superpuestos en el
+   panel narrativo izquierdo
+============================================= */
+
+/* Tutorial (escena 2) */
+.tutorial-hud {
+    position: relative;
+    z-index: 15;
+    padding: 0.8rem 1.2rem;
+    background: rgba(0,229,255,0.05);
+    border-bottom: 1px solid rgba(0,229,255,0.15);
+    flex-shrink: 0;
+    pointer-events: none;
+}
+
+.tutorial-label {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    color: var(--c-cyan);
+    text-shadow: var(--glow-cyan);
+    margin-bottom: 0.2rem;
+}
+
+.tutorial-goal {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--c-gold);
+}
+
+/* Chat (escena 2) */
+.chat-panel {
+    position: relative;
+    z-index: 15;
+    padding: 0.8rem 1.2rem;
+    background: rgba(0,0,0,0.4);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    flex-shrink: 0;
+    pointer-events: none;
+    min-height: 80px;
+}
+
+.chat-title {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    color: var(--c-muted);
+    margin-bottom: 0.5rem;
+}
+
+.chat-msg {
+    font-size: 0.85rem;
+    color: var(--c-text);
+    margin-bottom: 0.35rem;
+    animation: fadeSlideIn 0.4s ease both;
+}
+
+.chat-from {
+    color: var(--c-accent);
+    font-weight: 700;
+}
+
+/* Notificaciones del juego (escena 2) */
+.notif-stream {
+    position: relative;
+    z-index: 15;
+    padding: 0.5rem 1.2rem;
+    pointer-events: none;
+    min-height: 2rem;
+}
+
+.game-notif {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--c-green);
+    margin-bottom: 0.2rem;
+    animation: notifPop 3.5s ease both;
+    display: block;
+}
+
+@keyframes notifPop {
+    0%   { opacity: 0; transform: translateX(-6px); }
+    12%  { opacity: 1; transform: translateX(0); }
+    70%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* =============================================
+   TOP HUD (escena 3)
+============================================= */
+
+.top-hud {
+    position: relative;
+    z-index: 15;
+    padding: 0.8rem 1.2rem;
+    background: rgba(0,229,255,0.05);
+    border-bottom: 1px solid rgba(0,229,255,0.12);
+    flex-shrink: 0;
+    pointer-events: none;
+}
+
+.meta-counter {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--c-cyan);
+    text-shadow: var(--glow-cyan);
+    margin-bottom: 0.5rem;
+}
+
+.time-bar-wrap {
+    width: 100%;
+    height: 5px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.time-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--c-accent), var(--c-cyan));
+    border-radius: 3px;
+    transition: width 0.12s linear;
+}
+
+/* Auto-compras (escena 3) */
+.auto-buys {
+    position: relative;
+    z-index: 15;
+    padding: 0.4rem 1.2rem;
+    pointer-events: none;
+    min-height: 1.5rem;
+}
+
+.buy-notif {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--c-gold);
+    margin-bottom: 0.2rem;
+    animation: fadeSlideIn 0.3s ease both;
+    display: block;
+}
+
+/* =============================================
+   SUSURROS DE PADRES
+============================================= */
+
+.parent-whisper {
+    position: relative;
+    z-index: 15;
+    padding: 0.7rem 1.2rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    flex-shrink: 0;
+}
+
+.parent-whisper.show { opacity: 1; }
+
+.parent-line {
+    font-style: italic;
+    color: var(--c-muted);
+    font-size: 0.84rem;
+    margin-bottom: 0.35rem;
+    line-height: 1.4;
+}
+
+/* =============================================
+   ESCENA 4: SALA DE ESTAR
+============================================= */
+
+.date-ticker {
+    position: relative;
+    z-index: 15;
+    padding: 0.6rem 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    color: var(--c-gold);
+    text-shadow: var(--glow-gold);
+    pointer-events: none;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(255,200,64,0.12);
+    background: rgba(255,200,64,0.03);
+}
+
+.click-hud {
+    position: relative;
+    z-index: 15;
+    padding: 0.7rem 1.2rem;
+    pointer-events: none;
+    flex-shrink: 0;
+    background: rgba(0,229,255,0.04);
+    border-bottom: 1px solid rgba(0,229,255,0.1);
+}
+
+.click-progress-label {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--c-cyan);
+    margin-bottom: 0.3rem;
+}
+
+.click-warn {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--c-red);
+    text-shadow: var(--glow-red);
+}
+
+.blink { animation: blinkAnim 0.85s ease-in-out infinite; }
+
+@keyframes blinkAnim {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+}
+
+/* TV (decorativa, dentro del panel) */
+.tv-set {
+    position: relative;
+    z-index: 15;
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(
+        90deg,
+        rgba(60,60,100,0.25) 0%,
+        rgba(100,100,160,0.3) 50%,
+        rgba(60,60,100,0.25) 100%
+    );
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    animation: tvFlicker 0.15s infinite;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tv-set::before {
+    content: '📺';
+    font-size: 2rem;
+    opacity: 0.3;
+}
+
+@keyframes tvFlicker {
+    0%, 100% { opacity: 0.75; }
+    50%       { opacity: 0.9; }
+}
+
+/* =============================================
+   ESCENA 5: COMPRA (panel completo)
+============================================= */
+
+.purchase-modal {
+    position: relative;
+    z-index: 25;
+    margin: auto;
+    background: rgba(10,10,22,0.98);
+    border: 2px solid var(--c-gold);
+    border-radius: 10px;
+    padding: 2rem 2rem 1.8rem;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(255,200,64,0.2);
+    width: calc(100% - 2.4rem);
+    max-width: 360px;
+    align-self: center;
+}
+
+.purchase-title {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    color: var(--c-gold);
+    text-shadow: var(--glow-gold);
+    margin-bottom: 0.4rem;
+}
+
+.purchase-price {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    color: var(--c-text);
+    margin-bottom: 1.5rem;
+}
+
+.purchase-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.pbtn {
+    padding: 0.7rem 1.8rem;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    letter-spacing: 2px;
+}
+
+.pbtn-no  { background: rgba(255,32,85,0.12); color: var(--c-red);   border: 1px solid var(--c-red); }
+.pbtn-no:hover  { background: rgba(255,32,85,0.28); }
+.pbtn-yes { background: rgba(0,255,157,0.12); color: var(--c-green); border: 1px solid var(--c-green); }
+.pbtn-yes:hover { background: rgba(0,255,157,0.28); }
+
+.forced-notif {
+    position: relative;
+    z-index: 28;
+    margin: auto;
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    color: var(--c-gold);
+    text-shadow: var(--glow-gold);
+    text-align: center;
+    background: rgba(0,0,0,0.8);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255,200,64,0.35);
+    align-self: center;
+    max-width: calc(100% - 2.4rem);
+    animation: pulseBorder 0.7s ease infinite alternate;
+}
+
+@keyframes pulseBorder {
+    from { box-shadow: 0 0 10px rgba(255,200,64,0.2); }
+    to   { box-shadow: 0 0 30px rgba(255,200,64,0.5); }
+}
+
+.thought-bubble {
+    position: relative;
+    z-index: 29;
+    margin: 0.5rem 1.2rem;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--c-text);
+    background: rgba(0,0,0,0.75);
+    border: 1px solid var(--c-border);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    line-height: 1.5;
+    animation: fadeSlideIn 0.4s ease both;
+}
+
+.parent-reaction {
+    position: relative;
+    z-index: 25;
+    padding: 0.8rem 1.2rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    animation: fadeSlideIn 0.5s ease both;
+}
+
+.parent-reaction .parent-line {
+    font-size: 0.9rem;
+    color: var(--c-text);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* =============================================
+   ESCENA 6: FINAL
+============================================= */
+
+.level-stream {
+    position: relative;
+    z-index: 15;
+    padding: 0.5rem 1.2rem;
+    pointer-events: none;
+    min-height: 120px;
+    max-height: 180px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.lvl-notif {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--c-green);
+    margin-bottom: 0.15rem;
+    display: block;
+    animation: fadeSlideIn 0.3s ease both;
+}
+
+.eye-reflection {
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 14;
+    font-size: 5rem;
+    opacity: 0.15;
+    pointer-events: none;
+    filter: blur(2px);
+    animation: eyePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes eyePulse {
+    0%,100% { opacity: 0.1; transform: translateX(-50%) scale(1); }
+    50%     { opacity: 0.22; transform: translateX(-50%) scale(1.06); }
+}
+
+.meta-display {
+    position: relative;
+    z-index: 15;
+    padding: 0.5rem 1.2rem;
+    pointer-events: none;
+    flex-shrink: 0;
+    background: rgba(0,229,255,0.04);
+    border-top: 1px solid rgba(0,229,255,0.1);
+}
+
+.meta-line {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--c-cyan);
+    animation: metaChange 0.35s ease;
+}
+
+@keyframes metaChange {
+    0%   { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.year-display {
+    position: relative;
+    z-index: 15;
+    padding: 0.4rem 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    color: var(--c-accent);
+    text-shadow: var(--glow-acc);
+    pointer-events: none;
+    flex-shrink: 0;
+    text-align: center;
+    animation: yearFlash 0.5s ease both;
+}
+
+@keyframes yearFlash {
+    0%   { opacity: 0; letter-spacing: 15px; }
+    100% { opacity: 1; letter-spacing: 4px; }
+}
+
+.exit-area {
+    position: relative;
+    z-index: 25;
+    padding: 1rem 1.2rem;
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+    pointer-events: auto;
+    margin-top: auto;
+}
+
+.exit-btn {
+    background: rgba(255,32,85,0.15);
+    border: 2px solid var(--c-red);
+    color: var(--c-red);
+    padding: 0.9rem 3rem;
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    letter-spacing: 4px;
+    transition: all 0.25s;
+    text-shadow: var(--glow-red);
+    pointer-events: auto;
+}
+
+.exit-btn:hover {
+    background: rgba(255,32,85,0.3);
+    transform: scale(1.04);
+}
+
+/* Diálogo de salida */
+.exit-dialog-box {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    background: rgba(4,4,12,0.97);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    animation: fadeSlideIn 0.3s ease both;
+    pointer-events: auto;
+}
+
+.exit-msg {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    color: var(--c-text);
+    margin-bottom: 1.8rem;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 300px;
+}
+
+.exit-dialog-btn {
+    background: rgba(176,96,255,0.18);
+    border: 1px solid var(--c-accent);
+    color: var(--c-accent);
+    padding: 0.7rem 2.2rem;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 4px;
+    letter-spacing: 3px;
+    transition: all 0.2s;
+    pointer-events: auto;
+}
+
+.exit-dialog-btn:hover {
+    background: rgba(176,96,255,0.35);
+    transform: scale(1.04);
+}
+
+.exit-dialog-btn.yes-btn {
+    background: rgba(0,255,157,0.12);
+    border-color: var(--c-green);
+    color: var(--c-green);
+}
+
+.exit-dialog-btn.return-btn {
+    background: rgba(255,200,64,0.15);
+    border: 2px solid var(--c-gold);
+    color: var(--c-gold);
+    font-size: 1rem;
+    padding: 0.8rem 2.2rem;
+}
+
+/* =============================================
+   CRÉDITOS
+============================================= */
+
+#scene-credits {
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+}
+
+.credits-wrap {
+    position: relative;
+    z-index: 110;
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.credits-title {
+    font-family: var(--font-mono);
+    font-size: clamp(1.4rem, 4vw, 2.5rem);
+    color: var(--c-gold);
+    text-shadow: var(--glow-gold);
+    margin-bottom: 0.4rem;
+    letter-spacing: 5px;
+}
+
+.credits-sub {
+    font-size: 0.95rem;
+    color: var(--c-muted);
+    margin-bottom: 2rem;
+    letter-spacing: 2px;
+}
+
+.credits-roll {
+    animation: creditsScroll 12s linear forwards;
+    font-size: 1rem;
+    color: var(--c-text);
+    line-height: 2.4;
+}
+
+@keyframes creditsScroll {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-140px); }
+}
+
+/* =============================================
+   TRANSICIÓN A NEGRO
+============================================= */
+
+#black-screen {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9900;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.7s ease;
+}
+
+#black-screen.fade-in { opacity: 1; pointer-events: all; }
+
+/* =============================================
+   VISTA TERCERA PERSONA (escena 6 final)
+============================================= */
+
+.third-person-view {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(0,0,0,0.7);
+    pointer-events: none;
+}
+
+.third-person-view p {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--c-text);
+    margin-bottom: 1rem;
+    max-width: 320px;
+    line-height: 1.6;
+}
+
+/* =============================================
+   UTILIDAD
+============================================= */
+
+.hidden { display: none !important; }
+
+/* Elementos flotantes del clicker: sobre todo */
+#floating-layer  { z-index: 500 !important; }
+#toast-container { z-index: 500 !important; pointer-events: none !important; }
+#golden-btn      { z-index: 500 !important; }
+
+/* Override: clicker-styles.css pone position:relative en #game-container
+   pero el nuevo layout necesita que sea position:relative dentro del flex */
+#game-container {
+    position: relative !important;
+}

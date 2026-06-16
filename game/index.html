@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker Invaders - La Historia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="clicker-styles.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- =============================================
+     PANEL IZQUIERDO: NARRATIVA
+     Todas las escenas van aquí adentro.
+     Se muestran/ocultan con .active
+============================================= -->
+<div id="story-panel">
+
+    <!-- ESCENA 1: PATIO DEL COLEGIO -->
+    <div id="scene-1" class="scene active">
+        <div class="scene-bg school-bg"></div>
+        <div class="scene-header">
+            <span class="scene-label">ESC. 1</span>
+            <span class="scene-location">PATIO DEL COLEGIO · RECREO</span>
+            <span class="status-chip" id="s1-status">Status social: 35</span>
+        </div>
+        <div class="scene-content">
+            <div class="dialogue-box">
+                <div class="char-name">JUANITO</div>
+                <div class="char-text">¿Ya juegas Clicker Invaders?</div>
+            </div>
+            <div class="dialogue-box">
+                <div class="char-name">PEPITO</div>
+                <div class="char-text">¡Todos están jugando!</div>
+            </div>
+            <div class="dialogue-box">
+                <div class="char-name">JUANITO</div>
+                <div class="char-text">Llegué al nivel 27 ayer. ¿Tú en qué vas?</div>
+            </div>
+            <div class="options-container" id="s1-options">
+                <button class="option-btn" data-option="1">"No, ¿qué es eso?"</button>
+                <button class="option-btn" data-option="2">"No me gustan esos juegos."</button>
+                <button class="option-btn" data-option="3">"Sí lo conozco."</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ESCENA 2: HABITACIÓN - PRIMER CONTACTO -->
+    <div id="scene-2" class="scene">
+        <div class="scene-bg room-bg dim"></div>
+        <div class="scene-header">
+            <span class="scene-label">ESC. 2</span>
+            <span class="scene-location">HABITACIÓN · PC</span>
+            <span class="status-chip" id="s2-status">Status social: 35</span>
+        </div>
+        <div class="tutorial-hud">
+            <div class="tutorial-label">Haz clic.</div>
+            <div class="tutorial-goal" id="s2-goal">Clics necesarios: 20</div>
+        </div>
+        <div class="notif-stream" id="s2-notifs"></div>
+        <div class="scene-content" style="flex:1"></div>
+        <div class="chat-panel" id="s2-chat">
+            <div class="chat-title">CHAT DEL GRUPO</div>
+        </div>
+    </div>
+
+    <!-- ESCENA 3: HABITACIÓN - ENGANCHE -->
+    <div id="scene-3" class="scene">
+        <div class="scene-bg room-bg vivid"></div>
+        <div class="scene-header">
+            <span class="scene-label">ESC. 3</span>
+            <span class="scene-location">HABITACIÓN · NOCHE</span>
+        </div>
+        <div class="top-hud">
+            <div class="meta-counter" id="s3-counter">Meta: 500 clics (0/500)</div>
+            <div class="time-bar-wrap">
+                <div class="time-bar-fill" id="s3-timebar"></div>
+            </div>
+        </div>
+        <div class="auto-buys" id="s3-buys"></div>
+        <div class="scene-content" style="flex:1"></div>
+        <div class="parent-whisper" id="s3-parents">
+            <div class="parent-line">MAMÁ (a lo lejos): "¿Sigues jugando, hijo?"</div>
+            <div class="parent-line">PAPÁ (desde otro cuarto): "¡Ven a cenar!"</div>
+        </div>
+    </div>
+
+    <!-- ESCENA 4: SALA DE ESTAR -->
+    <div id="scene-4" class="scene">
+        <div class="scene-bg living-bg"></div>
+        <div class="scene-header">
+            <span class="scene-label">ESC. 4</span>
+            <span class="scene-location">SALA DE ESTAR</span>
+            <span class="status-chip" id="s4-status">Status social: 50</span>
+        </div>
+        <div class="date-ticker" id="s4-date">01/09/2026</div>
+        <div class="tv-set" id="s4-tv"></div>
+        <div class="click-hud" id="s4-hud">
+            <div class="click-progress-label" id="s4-progress">0/200</div>
+            <div class="click-warn blink" id="s4-warn" style="display:none">
+                ¡Sigue clickeando o pierdes tu progreso!
+            </div>
+        </div>
+        <div class="scene-content" style="flex:1"></div>
+        <div class="parent-whisper" id="s4-parents">
+            <div class="parent-line">MAMÁ: "Ojalá fuera igual de dedicado con los estudios…"</div>
+            <div class="parent-line">PAPÁ: "Al menos en eso le va bien; solo ha bajado en química."</div>
+        </div>
+    </div>
+
+    <!-- ESCENA 5: COMPRA NO AUTORIZADA -->
+    <div id="scene-5" class="scene">
+        <div class="scene-bg living-bg"></div>
+        <div class="scene-overlay solid-overlay"></div>
+        <div class="scene-header">
+            <span class="scene-label">ESC. 5</span>
+            <span class="scene-location">SALA DE ESTAR · PC</span>
+        </div>
+        <div class="scene-content" style="flex:1; justify-content:center; align-items:center; gap:1rem">
+            <div class="purchase-modal" id="s5-modal">
+                <div class="purchase-title">Caja Legendaria</div>
+                <div class="purchase-price">Se requiere S/100</div>
+                <div class="purchase-btns">
+                    <button class="pbtn pbtn-no" id="s5-no">No</button>
+                    <button class="pbtn pbtn-yes" id="s5-yes">Sí</button>
+                </div>
+            </div>
+            <div class="forced-notif hidden" id="s5-forced">
+                ¡Caja Legendaria adquirida con éxito!
+            </div>
+            <div class="thought-bubble hidden" id="s5-thought">
+                "¡Oh no, les voy a mentir a mis papás y me van a matar!"
+            </div>
+        </div>
+        <div class="parent-reaction hidden" id="s5-parents">
+            <div class="parent-line">MAMÁ: "Hijo, ¿te sientes bien? Últimamente estás más tranquilo."</div>
+            <div class="parent-line">PAPÁ: "¿Ya estás listo para una cena familiar sin quejarte? Te mereces un descanso."</div>
+        </div>
+    </div>
+
+    <!-- ESCENA 6: HABITACIÓN - FINAL -->
+    <div id="scene-6" class="scene">
+        <div class="scene-bg room-bg psycho"></div>
+        <div class="scene-header">
+            <span class="scene-label">ESC. 6</span>
+            <span class="scene-location">HABITACIÓN · ???</span>
+        </div>
+        <div class="level-stream" id="s6-levels"></div>
+        <div class="eye-reflection hidden" id="s6-eyes">👁️</div>
+        <div class="meta-display hidden" id="s6-meta">
+            <div class="meta-line" id="s6-meta-text">Meta actual: 100,000,000 clics</div>
+        </div>
+        <div class="year-display hidden" id="s6-year">2027</div>
+        <div class="scene-content" style="flex:1"></div>
+        <div class="exit-area hidden" id="s6-exit-area">
+            <button class="exit-btn" id="s6-exit-btn">SALIR</button>
+        </div>
+        <div class="exit-dialog-box hidden" id="s6-exit-dialog">
+            <div class="exit-msg" id="s6-exit-msg"></div>
+            <button class="exit-dialog-btn" id="s6-exit-action"></button>
+        </div>
+    </div>
+
+    <!-- CRÉDITOS -->
+    <div id="scene-credits" class="scene">
+        <div class="scene-bg credits-bg"></div>
+        <div class="credits-wrap">
+            <div class="credits-title">CLICKER INVADERS</div>
+            <div class="credits-sub">Un juego sobre adicción y tecnología</div>
+            <div class="credits-roll">
+                <p>Diseño y Narrativa</p>
+                <p>Arte y Tecnología</p>
+                <p>2026</p>
+                <p style="margin-top:2rem;opacity:0.4;font-size:0.8rem;">Gracias por jugar.</p>
+            </div>
+        </div>
+    </div>
+
+</div><!-- fin #story-panel -->
+
+
+<!-- =============================================
+     PANEL DERECHO: EL CLICKER
+     #game-container ocupa el resto del ancho
+============================================= -->
+<div id="game-container">
+    <canvas id="particle-canvas"></canvas>
+    <div id="grid-overlay"></div>
+
+    <header id="hud-top">
+        <div class="hud-block" id="block-prestige">
+            <span class="hud-label">PRESTIGE</span>
+            <span class="hud-value" id="prestige-count">0</span>
+        </div>
+        <div class="hud-block" id="block-total">
+            <span class="hud-label">ALL TIME</span>
+            <span class="hud-value" id="total-clicks">0</span>
+        </div>
+        <div class="hud-block" id="block-cps">
+            <span class="hud-label">POR SEGUNDO</span>
+            <span class="hud-value" id="cps-display">0</span>
+        </div>
+    </header>
+
+    <main id="main-area">
+        <section id="score-section">
+            <div id="score-wrapper">
+                <div id="score-display">0</div>
+                <div id="score-label">NEXUS COINS</div>
+            </div>
+            <div id="combo-wrapper">
+                <div id="combo-bar-track"><div id="combo-bar-fill"></div></div>
+                <div id="combo-info">
+                    <span id="combo-label">COMBO</span>
+                    <span id="combo-count">x1</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="clicker-section">
+            <div id="click-ring-outer">
+                <div id="click-ring-inner">
+                    <button id="click-btn" aria-label="Clicker principal">
+                        <div id="btn-core">
+                            <div id="btn-icon">⬡</div>
+                            <div id="btn-label">CLICK</div>
+                        </div>
+                        <svg id="btn-progress-svg" viewBox="0 0 220 220">
+                            <circle id="btn-progress-track" cx="110" cy="110" r="100"/>
+                            <circle id="btn-progress-fill" cx="110" cy="110" r="100"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="multiplier-display"></div>
+            <div id="rage-bar-wrapper">
+                <div id="rage-label">RAGE</div>
+                <div id="rage-bar-track"><div id="rage-bar-fill"></div></div>
+            </div>
+        </section>
+
+        <section id="upgrades-section">
+            <div id="upgrades-title">MEJORAS</div>
+            <div id="upgrades-list"></div>
+            <button id="prestige-btn" class="hidden">⬡ PRESTIGE ⬡</button>
+        </section>
+    </main>
+
+    <div id="floating-layer" aria-hidden="true"></div>
+    <div id="toast-container" aria-live="polite"></div>
+    <button id="golden-btn" class="hidden" aria-label="Golden click especial">✦</button>
+    <div id="rage-overlay" class="hidden" aria-hidden="true"></div>
+</div>
+
+
+<!-- Transición a negro -->
+<div id="black-screen"></div>
+
+
+<!-- =============================================
+     SCRIPTS
+============================================= -->
+<script src="js/state.js"></script>
+<script src="js/autosave.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/rage.js"></script>
+<script src="js/combo.js"></script>
+<script src="js/effects.js"></script>
+<script src="js/upgrade.js"></script>
+<script src="js/auto-clicker.js"></script>
+<script src="js/golden-click.js"></script>
+<script src="js/psychedelia.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/upgrades-ui.js"></script>
+<script src="js/prestige.js"></script>
+<script src="js/game-over.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/input.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
