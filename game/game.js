@@ -7,18 +7,20 @@
    que ya están cargados antes de este script.
 ============================================= */
 
+// Esperamos a que todo esté cargado para hacer el hook
 document.addEventListener('DOMContentLoaded', () => {
 
     /* ──────────────────────────────────────────
        INICIALIZACIÓN DEL CLICKER BASE
     ────────────────────────────────────────── */
-    AutoSave.start();
-    Particles.start();
-    Rage.start();
-    // Input.start() se llama en el momento correcto (después de la escena 1)
-    Upgrades_UI.render();
-    UI.updateAll();
-    Psychedelia.start();
+    // La inicialización principal la hace main.js de clicker
+    // Solo agregamos el wrapper de game over para inactividad
+    GameOverWrapper.start();
+
+    // Esperamos un poco para asegurar que main.js ya inicializó Input
+    setTimeout(() => {
+        setupClickHook();
+    }, 100);
 
     /* ──────────────────────────────────────────
        ESTADO NARRATIVO
@@ -96,16 +98,25 @@ document.addEventListener('DOMContentLoaded', () => {
        cada clic y actualizamos la lógica narrativa.
     ────────────────────────────────────────── */
 
-    const _origHandleClick = Engine.handleClick.bind(Engine);
+    function setupClickHook() {
+        // Monitoreamos el estado del juego en lugar de interceptar eventos
+        // Esto es más robusto porque no depende de la implementación de Input
+        let lastTotalClicks = State.get('totalClicks') || 0;
 
-    // Reemplazamos handleClick para que llame al original
-    // y además dispare nuestros hooks narrativos.
-    Engine.handleClick = function(x, y, isAuto) {
-        _origHandleClick(x, y, isAuto);
-        if (!isAuto) {
-            onPlayerClick();
-        }
-    };
+        setInterval(() => {
+            const currentTotalClicks = State.get('totalClicks') || 0;
+            if (currentTotalClicks > lastTotalClicks) {
+                const clicksDifference = currentTotalClicks - lastTotalClicks;
+                console.log(`Detectados ${clicksDifference} clics nuevos`);
+                for (let i = 0; i < clicksDifference; i++) {
+                    onPlayerClick();
+                }
+                lastTotalClicks = currentTotalClicks;
+            }
+        }, 100);
+
+        console.log('Hook de clics configurado con monitoreo de estado');
+    }
 
     function onPlayerClick() {
         switch (story.currentScene) {
@@ -413,31 +424,42 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 6000);
 
-        // Padres a los 3 s
+        // Padres según el script
         setTimeout(() => {
             const p = document.getElementById('s4-parents');
             if (!p) return;
 
             p.classList.add('show');
-            p.innerHTML = '<div class="parent-line">MAMÁ: ¿Cómo te fue hoy?</div>';
+            p.innerHTML = '<div class="parent-line">MAMÁ: Ojalá fuera igual de dedicado con los estudios…</div>';
 
             setTimeout(() => {
-            p.innerHTML += '<div class="parent-line">MAMÁ: ¿Me escuchaste?</div>';
-            }, 8000);
+            p.innerHTML += '<div class="parent-line">PAPÁ: Al menos en eso le va bien; solo ha bajado en química.</div>';
+            }, 3000);
 
-            setTimeout(() => {
-            p.innerHTML += '<div class="parent-line">PAPÁ: Ya casi no sales de tu cuarto.</div>';
-            }, 16000);
+        }, 5000);
 
-            setTimeout(() => {
-            p.innerHTML += '<div class="parent-line">MAMÁ: Antes pasabas más tiempo con nosotros.</div>';
-            }, 24000);
+        // Televisor cambia de canal
+        const tvChannels = ['📺 Canal 4', '📺 Canal 7', '📺 Canal 9', '📺 Canal 11', '📺 Canal 13'];
+        let tvIdx = 0;
+        const tvInterval = setInterval(() => {
+            if (story.currentScene !== 4 || s4SceneFinished) {
+                clearInterval(tvInterval);
+                return;
+            }
+            const tv = document.getElementById('s4-tv');
+            if (tv) {
+                tv.textContent = tvChannels[tvIdx];
+                tvIdx = (tvIdx + 1) % tvChannels.length;
+            }
+        }, 4000);
 
-            setTimeout(() => {
-            p.innerHTML += '<div class="parent-line">PAPÁ: Ya ni cenamos juntos.</div>';
-            }, 32000);
-
-        }, 3000);
+        // Status social y nivel suben automáticamente
+        setInterval(() => {
+            if (story.currentScene !== 4 || s4SceneFinished) return;
+            story.socialStatus += 2;
+            const sv = document.getElementById('s4-status');
+            if (sv) sv.textContent = 'Status social: ' + story.socialStatus;
+        }, 2000);
 
         // Chequeo de inactividad
         s4InactivityCheck = setInterval(() => {
@@ -810,8 +832,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // La escena 1 lo deshabilita manualmente
     startScene1();
 
-    // Input.start() lo llamamos ahora para que funcione
-    // (pero el botón estará deshabilitado hasta la escena 2)
-    Input.start();
+    // Input.start() ya fue llamado por main.js de clicker
+    // No necesitamos llamarlo de nuevo
 
 });

@@ -22,7 +22,7 @@
     --glow-cyan:   0 0 20px rgba(0,229,255,0.5);
 
     /* Ancho del panel narrativo */
-    --story-w: 42vw;
+    --story-w: 30vw;
     --divider: 2px;
 }
 
@@ -283,7 +283,7 @@ body {
 .tutorial-hud {
     position: relative;
     z-index: 15;
-    padding: 0.8rem 1.2rem;
+    padding: 0.4rem 0.8rem;
     background: rgba(0,229,255,0.05);
     border-bottom: 1px solid rgba(0,229,255,0.15);
     flex-shrink: 0;
@@ -292,15 +292,15 @@ body {
 
 .tutorial-label {
     font-family: var(--font-mono);
-    font-size: 1.4rem;
+    font-size: 1rem;
     color: var(--c-cyan);
     text-shadow: var(--glow-cyan);
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.1rem;
 }
 
 .tutorial-goal {
     font-family: var(--font-mono);
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     color: var(--c-gold);
 }
 
@@ -308,27 +308,30 @@ body {
 .chat-panel {
     position: relative;
     z-index: 15;
-    padding: 0.8rem 1.2rem;
+    padding: 0.2rem 0.6rem;
     background: rgba(0,0,0,0.4);
     border-top: 1px solid rgba(255,255,255,0.05);
     flex-shrink: 0;
     pointer-events: none;
-    min-height: 80px;
+    min-height: 25px;
+    max-height: 40px;
+    overflow: hidden;
 }
 
 .chat-title {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 3px;
+    font-size: 0.45rem;
+    letter-spacing: 1px;
     color: var(--c-muted);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
 }
 
 .chat-msg {
-    font-size: 0.85rem;
+    font-size: 1rem;
     color: var(--c-text);
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.3rem;
     animation: fadeSlideIn 0.4s ease both;
+    font-weight: 500;
 }
 
 .chat-from {
@@ -340,16 +343,16 @@ body {
 .notif-stream {
     position: relative;
     z-index: 15;
-    padding: 0.5rem 1.2rem;
+    padding: 0.3rem 0.8rem;
     pointer-events: none;
-    min-height: 2rem;
+    min-height: 1.5rem;
 }
 
 .game-notif {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     color: var(--c-green);
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.15rem;
     animation: notifPop 3.5s ease both;
     display: block;
 }
@@ -424,22 +427,26 @@ body {
 .parent-whisper {
     position: relative;
     z-index: 15;
-    padding: 0.7rem 1.2rem;
-    border-top: 1px solid rgba(255,255,255,0.04);
+    padding: 1rem 1.4rem;
+    border-top: 2px solid rgba(255,200,64,0.3);
+    background: rgba(10,10,22,0.85);
     pointer-events: none;
     opacity: 0;
     transition: opacity 1.2s ease;
     flex-shrink: 0;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
 }
 
 .parent-whisper.show { opacity: 1; }
 
 .parent-line {
     font-style: italic;
-    color: var(--c-muted);
-    font-size: 0.84rem;
-    margin-bottom: 0.35rem;
-    line-height: 1.4;
+    color: #e8e8f0;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+    text-shadow: 0 0 10px rgba(255,200,64,0.3);
+    font-weight: 500;
 }
 
 /* =============================================

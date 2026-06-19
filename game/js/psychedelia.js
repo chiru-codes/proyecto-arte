@@ -257,12 +257,12 @@ const Psychedelia = (() => {
 
         /* ─── CSS FILTERS ─── */
         if (tier >= 1) {
-            const hueSpeed = 20 + tier * 30;
+            const hueSpeed = 15 + tier * 15;
             const hueAngle = (elapsed * hueSpeed) % 360;
-            const hueMod = Math.sin(elapsed * 0.7) * (20 + tier * 10);
-            const sat = 1 + overall * 5;
-            const ctr = 1 + overall * 1.2 + Math.sin(elapsed * 0.5) * overall * 0.5;
-            const bri = 1 + Math.sin(elapsed * 0.6) * overall * 0.25;
+            const hueMod = Math.sin(elapsed * 0.7) * (10 + tier * 5);
+            const sat = 1 + overall * 2;
+            const ctr = 1 + overall * 0.5 + Math.sin(elapsed * 0.5) * overall * 0.2;
+            const bri = 1 + Math.sin(elapsed * 0.6) * overall * 0.1;
 
             container.style.filter = [
                 `hue-rotate(${hueAngle + hueMod}deg)`,
@@ -272,22 +272,22 @@ const Psychedelia = (() => {
             ].join(' ');
         }
 
-        overlays.vignette.style.opacity = overall * 0.7;
+        overlays.vignette.style.opacity = overall * 0.3;
 
         /* ─── TIER 2+ : SCANLINES, BREATHE, SKEW ─── */
         if (tier >= 2) {
-            overlays.scanlines.style.opacity = 0.15 + overall * 0.7;
+            overlays.scanlines.style.opacity = 0.08 + overall * 0.3;
 
-            const breathe = 1 + Math.sin(elapsed * 2 * overall) * 0.01 * overall;
-            const skewX = Math.sin(elapsed * 0.3 + tier * 0.5) * overall * 0.8;
-            const skewY = Math.sin(elapsed * 0.4 + tier * 0.3) * overall * 0.5;
+            const breathe = 1 + Math.sin(elapsed * 2 * overall) * 0.005 * overall;
+            const skewX = Math.sin(elapsed * 0.3 + tier * 0.5) * overall * 0.4;
+            const skewY = Math.sin(elapsed * 0.4 + tier * 0.3) * overall * 0.25;
             container.style.transform = `scale(${breathe}) skew(${skewX}deg, ${skewY}deg)`;
         }
 
         /* ─── TIER 3+ : NOISE ─── */
         if (tier >= 3) {
             overlays.noise.style.display = 'block';
-            overlays.noise.style.opacity = 0.08 + overall * 0.45;
+            overlays.noise.style.opacity = 0.04 + overall * 0.2;
             noiseCounter++;
             if (noiseCounter % 2 === 0) updateNoise();
         } else {
@@ -314,7 +314,7 @@ const Psychedelia = (() => {
             drawLSD(tier, progress, elapsed);
             overlays.lsd.style.display = 'block';
             const lsdAlpha = Math.min(1, (tier - 1) / 6 + progress / 6);
-            overlays.lsd.style.opacity = lsdAlpha * 0.75;
+            overlays.lsd.style.opacity = lsdAlpha * 0.35;
         } else {
             overlays.lsd.style.display = 'none';
         }
