@@ -118,9 +118,10 @@ body {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
+    justify-items: center;
     gap: 2rem;
     padding: 1rem 2rem 1.5rem;
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     width: 100%;
 }
