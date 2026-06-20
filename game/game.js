@@ -336,10 +336,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Padres hablan a los 5 segundos
         s3ParentTimeout = setTimeout(() => {
             const p = document.getElementById('s3-parents');
-            if (p) p.classList.add('show');
-            setTimeout(() => {
+            if (p) {
+                p.classList.add('show');
                 p.innerHTML = '<div class="parent-line">MAMÁ: [suspiro] "…."</div><div class="parent-line">PAPÁ: [silencio] "…."</div>';
-            }, 4000);
+            }
         }, 5000);
     }
 
@@ -425,18 +425,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 6000);
 
         // Padres según el script
-        setTimeout(() => {
+        const s4ParentTimeout = setTimeout(() => {
             const p = document.getElementById('s4-parents');
             if (!p) return;
 
             p.classList.add('show');
-            p.innerHTML = '<div class="parent-line">MAMÁ: Ojalá fuera igual de dedicado con los estudios…</div>';
-
-            setTimeout(() => {
-            p.innerHTML += '<div class="parent-line">PAPÁ: Al menos en eso le va bien; solo ha bajado en química.</div>';
-            }, 3000);
+            p.innerHTML = '<div class="parent-line">MAMÁ: Ojalá fuera igual de dedicado con los estudios…</div><div class="parent-line">PAPÁ: Al menos en eso le va bien; solo ha bajado en química.</div>';
 
         }, 5000);
+
+        // Limpiar timeout cuando la escena termine
+        const cleanupScene4 = () => {
+            clearTimeout(s4ParentTimeout);
+        };
+
+        // Agregar cleanup al final de la escena
+        const originalOnClickScene4 = onClickScene4;
+        onClickScene4 = function() {
+            originalOnClickScene4();
+            if (s4SceneFinished) {
+                cleanupScene4();
+            }
+        };
 
         // Televisor cambia de canal
         const tvChannels = ['📺 Canal 4', '📺 Canal 7', '📺 Canal 9', '📺 Canal 11', '📺 Canal 13'];
